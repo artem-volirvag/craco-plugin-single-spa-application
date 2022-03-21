@@ -35,8 +35,10 @@ module.exports = {
     webpackConfig.output.publicPath = "";
 
     webpackConfig.optimization.minimize = minimize;
-    webpackConfig.optimization.namedModules = true;
-    webpackConfig.optimization.namedChunks = true;
+    // webpackConfig.optimization.namedModules = true;
+    webpackConfig.optimization.moduleIds = "named";
+    // webpackConfig.optimization.namedChunks = true;
+    webpackConfig.optimization.chunkIds = "named";
 
     webpackConfig.optimization.splitChunks = {
       chunks: "async",
@@ -97,7 +99,8 @@ module.exports = {
 };
 
 const disableCSSExtraction = (webpackConfig) => {
-  webpackConfig.module.rules[1].oneOf.forEach((x) => {
+  let oneOf = webpackConfig.module.rules[1].oneOf || webpackConfig.module.rules[0].oneOf;
+  oneOf.forEach((x) => {
     if (!x.use) return;
 
     if (Array.isArray(x.use)) {
